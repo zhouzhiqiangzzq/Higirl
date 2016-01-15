@@ -95,5 +95,46 @@ name = raw_input('please enter your name: ')
 	4.4 生成式
 		要创建一个generator，有很多种方法。第一种方法很简单，只要把一个列表生成式的[]改成()
 		定义generator的另一种方法。如果一个函数定义中包含yield关键字，那么这个函数就不再是一个普通函数，而是一个generator：
+5	函数式编程
+	5.1 高阶函数
+		变量可以指向函数  函数名也是变量	传入函数 
+		既然变量可以指向函数，函数的参数能接收变量，那么一个函数就可以接收另一个函数作为参数，这种函数就称之为高阶函数。 编写高阶函数，就是让函数的参数能够接收别的函数。
+	
+		5.1.1 map/reduce
+			map --->  list
+			reduce的用法。reduce把一个函数作用在一个序列[x1, x2, x3...]上，这个函数必须接收两个参数，reduce把结果继续和序列的下一个元素做累积计算，
+		5.1.2 filter	
+			filter()把传入的函数依次作用于每个元素，然后根据返回值是True还是False决定保留还是丢弃该元素
+		5.1.3 sorted
+			对于两个元素x和y，如果认为x < y，则返回-1，如果认为x == y，则返回0，如果认为x > y，则返回1  可以实现自定义的排序
+	5.2 返回函数
+		函数作为返回值
+		闭包  返回函数不要引用任何循环变量，或者后续会发生变化的变量。
+	5.3 匿名函数
+		匿名函数lambda x: x * x   关键字lambda表示匿名函数，冒号前面的x表示函数参数。用匿名函数有个好处，因为函数没有名字，不必担心函数名冲突。此外，匿名函数也是一个函数对象，也可以把匿名函数赋值给一个变量，再利用变量来调用该函数
+	5.4 装饰器
+		import functools
+
+		def log(func):
+			@functools.wraps(func)
+			def wrapper(*args, **kw):
+				print 'call %s():' % func.__name__
+				return func(*args, **kw)
+			return wrapper
 			
-   
+		import functools
+
+		def log(text):
+			def decorator(func):
+				@functools.wraps(func)
+				def wrapper(*args, **kw):
+					print '%s %s():' % (text, func.__name__)
+					return func(*args, **kw)
+				return wrapper
+			return decorator
+	5.5 偏函数
+		简单总结functools.partial的作用就是，把一个函数的某些参数给固定住（也就是设置默认值），返回一个新的函数，调用这个新函数会更简单。
+6	模块
+	6.1 使用模块
+		别名  作用域  类似_xxx和__xxx这样的函数或变量就是非公开的（private）
+	6.2 安装第三方模块
