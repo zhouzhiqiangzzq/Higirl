@@ -138,3 +138,87 @@ name = raw_input('please enter your name: ')
 	6.1 使用模块
 		别名  作用域  类似_xxx和__xxx这样的函数或变量就是非公开的（private）
 	6.2 安装第三方模块
+		pip  命令
+		Python解释器会搜索当前目录、所有已安装的内置模块和第三方模块，搜索路径存放在sys模块的path变量中：
+		一是直接修改sys.path，添加要搜索的目录：sys.path.append('/Users/michael/my_py_scripts') 第二种方法是设置环境变量PYTHONPATH，
+	6.3 使用__future__
+		Python为了确保你能顺利过渡到新版本，特别提供了__future__模块，让你在旧的版本中试验新版本的一些特性。
+7	面向对象编程
+	7.1 类和实例
+		class Student(object): pass 紧接着是(object)，表示该类是从哪个类继承下来的   通过定义一个特殊的__init__方法   第一个参数永远是self
+	7.2	访问限制	
+		变量名类似__xxx__的，也就是以双下划线开头，并且以双下划线结尾的，是特殊变量，特殊变量是可以直接访问的，不是private变量，
+		有些时候，你会看到以一个下划线开头的实例变量名，比如_name，这样的实例变量外部是可以访问的，但是，按照约定俗成的规定，当你看到这样的变量时，意思就是，“虽然我可以被访问，但是，请把我视为私有变量，不要随意访问”。
+		双下划线开头的实例变量是不是一定不能从外部访问呢？其实也不是。不能直接访问__name是因为Python解释器对外把__name变量改成了_Student__name，所以，仍然可以通过_Student__name来访问__name变量：
+	7.3 继承和多态
+	7.4 获取对象信息
+		我们来判断对象类型，使用type()函数：
+		使用isinstance() 并且还可以判断一个变量是否是某些类型中的一种   isinstance(u'a', (str, unicode))  
+		使用dir()  如果要获得一个对象的所有属性和方法，可以使用dir()函数，它返回一个包含字符串的list，比如，获得一个str对象的所有属性和方法：
+		如果试图获取不存在的属性，会抛出AttributeError的错误：    可以传入一个default参数，如果属性不存在，就返回默认值：
+8 	面向对象高级编程
+	8.1 使用__slots__
+		Student.set_score = MethodType(set_score, None, Student)
+		但动态绑定允许我们在程序运行的过程中动态给class加上功能，这在静态语言中很难实现。
+		Python允许在定义class的时候，定义一个特殊的__slots__变量，来限制该class能添加的属性
+		使用__slots__要注意，__slots__定义的属性仅对当前类起作用，对继承的子类是不起作用的：除非在子类中也定义__slots__，这样，子类允许定义的属性就是自身的__slots__加上父类的__slots__。
+	8.2 使用@property
+		Python内置的@property装饰器就是负责把一个方法变成属性调用的：
+	8.3 多重继承
+		由于Python允许使用多重继承，因此，Mixin就是一种常见的设计。
+	8.4 定制类
+		__str__   __iter__   __getitem__    __getattr__    __call__     我们需要判断一个对象是否能被调用，能被调用的对象就是一个Callable对象 
+	8.5 使用元类
+		type() 
+		type()函数既可以返回一个对象的类型，又可以创建出新的类型，比如，我们可以通过type()函数创建出Hello类，而无需通过class Hello(object)...的定义：
+		要创建一个class对象，type()函数依次传入3个参数：
+		class的名称；
+		继承的父类集合，注意Python支持多重继承，如果只有一个父类，别忘了tuple的单元素写法；
+		class的方法名称与函数绑定，这里我们把函数fn绑定到方法名hello上。
+		
+		通过type()函数创建的类和直接写class是完全一样的，因为Python解释器遇到class定义时，仅仅是扫描一下class定义的语法，然后调用type()函数创建出class。
+		
+		metaclass
+		先定义metaclass，就可以创建类，最后创建实例。
+9	错误、调试和测试
+	9.1 错误处理
+		Python内置的try...except...finally用来处理错误十分方便。出错时，会分析错误信息并定位错误发生的代码位置才是最关键的。
+	9.2 调试
+		print  
+		断言（assert）  启动Python解释器时可以用-O参数来关闭assert  关闭后，你可以把所有的assert语句当成pass来看  
+		logging
+		pdb
+		IDE
+	9.3 单元测试
+		我们需要编写一个测试类，从unittest.TestCase继承。 以test开头的方法就是测试方法，不以test开头的方法不被认为是测试方法，测试的时候不会被执行。   assertEquals()：  d['empty']  
+		setUp与tearDown
+	9.4 文档测试
+10	IO编程
+	10.1 文件读写 
+		读文件
+		要以读文件的模式打开一个文件对象，使用Python内置的open()函数，传入文件名和标示符：标示符'r'表示读，前面讲的默认都是读取文本文件，并且是ASCII编码的文本文件。
+		Python引入了with语句来自动帮我们调用close()方法： 
+		
+		file-like Object
+		要读取二进制文件，比如图片、视频等等，用'rb'模式打开文件即可
+		
+		字符编码
+		Python还提供了一个codecs模块帮我们在读文件时自动转换编码
+		
+		写文件
+		写文件和读文件是一样的，唯一区别是调用open()函数时，传入标识符'w'或者'wb'表示写文本文件或写二进制文件：
+	10.2 操作文件和目录
+		os
+		环境变量
+		os.environ
+		os.getenv('PATH')
+		shutil模块提供了copyfile()的函数
+	10.3 序列化
+		Python提供两个模块来实现序列化：cPickle和pickle。
+		pickle.dumps()  pickle.loads()
+		
+		JSON
+		就是反序列化得到的所有字符串对象默认都是unicode而不是str。由于JSON标准规定JSON编码是UTF-8，所以我们总是能正确地在Python的str或unicode与JSON的字符串之间转换。
+		json模块的dumps()和loads()函数
+		 
+		
